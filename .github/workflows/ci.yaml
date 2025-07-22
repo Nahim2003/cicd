@@ -2,15 +2,14 @@ name: CoderCo Combined
 
 on: [push]
 
-
 jobs:
   build:
     runs-on: ubuntu-20.04
+    timeout-minutes: 10
 
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
-
 
     steps:
     - name: checkout code
@@ -30,8 +29,8 @@ jobs:
     - name: run tests
       run: |
         cd chapter4
-        python -m unittest discover
+        timeout 300 python -m unittest discover
 
     - name: notify us of success
-      run: echo "Tests passed on python ${{ matrix.python-version}}"
-      if: success() 
+      if: success()
+      run: echo "Tests passed on python ${{ matrix.python-version }}"
