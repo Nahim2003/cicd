@@ -12,25 +12,36 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
 
     steps:
-    - name: checkout code
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: setup python
+    - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: install dependencies
+    - name: Check Python version
+      run: python --version
+
+    - name: Check repo contents
+      run: ls -la
+
+    - name: Check chapter4 exists
+      run: |
+        if [ ! -d "chapter4" ]; then echo "chapter4 not found!" && exit 1; fi
+
+    - name: Install dependencies
       run: |
         cd chapter4
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: run tests
+    - name: Run tests
       run: |
         cd chapter4
-        timeout 300 python -m unittest discover
+        timeout 60 python -m unittest discover -v
 
-    - name: notify us of success
+    - name: Notify success
       if: success()
-      run: echo "Tests passed on python ${{ matrix.python-version }}"
+      run: echo "Tests passed on Python ${{ matrix.python-version }}"
+
