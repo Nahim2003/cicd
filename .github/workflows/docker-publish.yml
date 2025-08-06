@@ -25,7 +25,9 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ./HelloApp
-        file: ./HelloApp/Dockerfile
+        context: .
+        file: ./Dockerfile
         push: true
         tags: nahim2003/helloapp:latest
+
+        # test
